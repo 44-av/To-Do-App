@@ -2,7 +2,7 @@ import './App.css'
 import React, { useState } from 'react'
 import { IoCheckbox } from "react-icons/io5";
 import { TbSubtask } from "react-icons/tb";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+
 const AddToDoTask = ({ NewTask }) => {
   const [task, setTask] = useState("");
   return (
@@ -37,38 +37,52 @@ const DoneTask = ({ Task, DateCreated, Status, DateFinished }) => {
   )
 }
 const ToDoItem = ({ Task, DateCreated, Status, Done, Remove, Index, TaskIndex }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
   return (
-    <div className="w-500 mt-2 p-5 rounded-lg shadow-lg bg-white hover:bg-lightBlue">
-      <div className="flex justify-between">
-        <div className="flex items-center h-5">
-          <input
-            class="mt-8 w-6 h-6  bg-green hover:outline-5 hover:outline-green"
-            id="default-checkbox"
-            type="checkbox"
-            checked={false}
-            onClick={() => Done(Task, TaskIndex)}
-            />
-        </div>
-        <div className="flex-grow ml-5">
-          <p id="helper-radio-text" className="text-xs font-normal text-gray dark:text-gray-300">
-            {DateCreated}
-          </p>
-          <h3 className="text-black text-xl font-bold uppercase">{Task}</h3>
-          <p id="helper-radio-text" className="text-xxs font-normal text-gray dark:text-gray-300">
-            Status ({Status})
-          </p>
-        </div>
-        <div className="flex ">
-          <button
-            type="button"
-            className="text-sm bg-lightremove hover:bg-delete text-white mt-3 h-12"
-            onClick={() => Remove(Index)}
-          >
-            Remove
-          </button>
-        </div>
+    <>
+      <form id="task-form" className="flex justify-center mb-4 mt-2">
+        <input type="text" id="task-input" className="w-full text-black p-2 rounded-lg outline-green" placeholder="Search Task" value={searchTerm} onChange={handleSearch} />
+
+      </form>
+
+      <div className="w-500 mt-2 p-5 rounded-lg shadow-lg bg-white hover:bg-lightBlue">
+        {Task.toLowerCase().includes(searchTerm.toLowerCase()) && (
+          <div className="flex justify-between">
+            <div className="flex items-center h-5">
+              <input
+                class="mt-8 w-6 h-6  bg-green hover:outline-5 hover:outline-green"
+                id="default-checkbox"
+                type="checkbox"
+                checked={false}
+                onClick={() => Done(Task, TaskIndex)}
+              />
+            </div>
+            <div className="flex-grow ml-5">
+              <p id="helper-radio-text" className="text-xs font-normal text-gray dark:text-gray-300">
+                {DateCreated}
+              </p>
+              <h3 className="text-black text-xl font-bold uppercase">{Task}</h3>
+              <p id="helper-radio-text" className="text-xxs font-normal text-gray dark:text-gray-300">
+                Status ({Status})
+              </p>
+            </div>
+            <div className="flex ">
+              <button
+                type="button"
+                className="text-sm bg-lightremove hover:bg-delete text-white mt-3 h-12"
+                onClick={() => Remove(Index)}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   )
 }
 
@@ -78,7 +92,9 @@ export default function App() {
 
   const [isPending, setIsPending] = useState(true);
   const [isDone, setIsDone] = useState(false);
+
   const current = new Date();
+  // const month = ['January', 'Febuary', 'March', 'April','May', 'June', 'July', 'August','September', 'October', 'November']
   const now = `${current.getMonth()}/${current.getDate()}/${current.getFullYear()}`;
   const addTask = (task) => {
     if (task.trim()) {
