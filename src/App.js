@@ -46,9 +46,7 @@ const ToDoItem = ({ Task, DateCreated, Status, Done, Remove, Index, TaskIndex })
     <>
       <form id="task-form" className="flex justify-center mb-4 mt-2">
         <input type="text" id="task-input" className="w-full text-black p-2 rounded-lg outline-green" placeholder="Search Task" value={searchTerm} onChange={handleSearch} />
-
       </form>
-
       <div className="w-500 mt-2 p-5 rounded-lg shadow-lg bg-white hover:bg-lightBlue">
         {Task.toLowerCase().includes(searchTerm.toLowerCase()) && (
           <div className="flex justify-between">
